@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/akm2109/common/workspace/it/clion/srt-server/server.cpp
+iostream
+-
+srt/srt.h
+-
+fstream
+-
+iostream
+-
+string
+-
+cstring
+-
+cstdlib
+-
+netdb.h
+-
+stdexcept
+-
+pthread.h
+-
+

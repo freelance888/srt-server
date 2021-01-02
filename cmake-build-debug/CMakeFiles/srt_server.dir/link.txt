@@ -1,0 +1,1 @@
+/usr/bin/c++   -pthread -g   CMakeFiles/srt_server.dir/server.cpp.o  -o srt_server  -lsrt 
