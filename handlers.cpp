@@ -36,7 +36,6 @@ void *connections_handler(void *ptr) {
         for (int i = 0; i < n_rcv; i++) {
             SRTSOCKET sock_rcv = srtrcvfds[i];
             SRT_SOCKSTATUS status_rcv = srt_getsockstate(sock_rcv);
-
             if ((status_rcv == SRTS_BROKEN) ||
                 (status_rcv == SRTS_NONEXIST) ||
                 (status_rcv == SRTS_CLOSED)) {
@@ -102,7 +101,7 @@ void *connections_handler(void *ptr) {
         int n_snd = srt_epoll_wait(info->epollout, 0, 0, &srtsndfds[0], &srtsndfdslen, 50, 0, 0, 0, 0);
 
         for (int i = 0; i < n_snd; i++) {
-            SRTSOCKET sock_snd = srtrcvfds[i];
+            SRTSOCKET sock_snd = srtsndfds[i];
             SRT_SOCKSTATUS status_snd = srt_getsockstate(sock_snd);
 
             if ((status_snd == SRTS_BROKEN) ||
@@ -280,19 +279,23 @@ void add_socket(SRTSOCKET s_in, SRTSOCKET s_out) {
 void rm_socket(SRTSOCKET s_in, SRTSOCKET s_out) {
     if (s_in != SRT_INVALID_SOCK) {
         pthread_mutex_lock(&lock);
-        if (find(sockets_in.begin(), sockets_in.end(), s_in) == sockets_in.end()) {
+        if (find(sockets_in.begin(), sockets_in.end(), s_in) != sockets_in.end()) {
             sockets_in.remove(s_in);
             src_count--;
             srt_close(s_in);
+
+            log(LOG_INFO, (char *) "[CONNTHREAD] source has disconnected\n");
         }
         pthread_mutex_unlock(&lock);
     }
     if (s_out != SRT_INVALID_SOCK) {
         pthread_mutex_lock(&lock);
-        if (find(sockets_out.begin(), sockets_out.end(), s_out) == sockets_out.end()) {
+        if (find(sockets_out.begin(), sockets_out.end(), s_out) != sockets_out.end()) {
             sockets_out.remove(s_out);
             target_count--;
             srt_close(s_out);
+
+            log(LOG_INFO, (char *) "[CONNTHREAD] target has disconnected\n");
         }
         pthread_mutex_unlock(&lock);
     }
@@ -348,7 +351,7 @@ void print_stats(float timedelta) {
     strftime(tempbuff, sizeof tempbuff, "%Y.%m.%d %H:%M:%S", p_tm);
 
     snprintf(mainthreadmsg_buff, sizeof mainthreadmsg_buff, "[%s][STATS] [%d sources; %d targets] "
-                                        "[+%.1fs] [total rcv: %.1f%s (+%.1f%s)] [total sent: %.1f%s (+%.1f%s)]",
+                                                            "[+%.1fs] [total rcv: %.1f%s (+%.1f%s)] [total sent: %.1f%s (+%.1f%s)]",
              tempbuff, src_count, target_count, timedelta,
              total_rcv, total_rcv_suff,
              temp_rcv, temp_rcv_suff,
