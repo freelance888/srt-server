@@ -77,30 +77,60 @@ include CMakeFiles/srt_server.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/srt_server.dir/flags.make
 
-CMakeFiles/srt_server.dir/server.cpp.o: CMakeFiles/srt_server.dir/flags.make
-CMakeFiles/srt_server.dir/server.cpp.o: ../server.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/akm2109/common/workspace/it/clion/srt-server/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/srt_server.dir/server.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/srt_server.dir/server.cpp.o -c /home/akm2109/common/workspace/it/clion/srt-server/server.cpp
+CMakeFiles/srt_server.dir/handlers.cpp.o: CMakeFiles/srt_server.dir/flags.make
+CMakeFiles/srt_server.dir/handlers.cpp.o: ../handlers.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/akm2109/common/workspace/it/clion/srt-server/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/srt_server.dir/handlers.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/srt_server.dir/handlers.cpp.o -c /home/akm2109/common/workspace/it/clion/srt-server/handlers.cpp
 
-CMakeFiles/srt_server.dir/server.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/srt_server.dir/server.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/akm2109/common/workspace/it/clion/srt-server/server.cpp > CMakeFiles/srt_server.dir/server.cpp.i
+CMakeFiles/srt_server.dir/handlers.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/srt_server.dir/handlers.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/akm2109/common/workspace/it/clion/srt-server/handlers.cpp > CMakeFiles/srt_server.dir/handlers.cpp.i
 
-CMakeFiles/srt_server.dir/server.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/srt_server.dir/server.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/akm2109/common/workspace/it/clion/srt-server/server.cpp -o CMakeFiles/srt_server.dir/server.cpp.s
+CMakeFiles/srt_server.dir/handlers.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/srt_server.dir/handlers.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/akm2109/common/workspace/it/clion/srt-server/handlers.cpp -o CMakeFiles/srt_server.dir/handlers.cpp.s
+
+CMakeFiles/srt_server.dir/main.cpp.o: CMakeFiles/srt_server.dir/flags.make
+CMakeFiles/srt_server.dir/main.cpp.o: ../main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/akm2109/common/workspace/it/clion/srt-server/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/srt_server.dir/main.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/srt_server.dir/main.cpp.o -c /home/akm2109/common/workspace/it/clion/srt-server/main.cpp
+
+CMakeFiles/srt_server.dir/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/srt_server.dir/main.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/akm2109/common/workspace/it/clion/srt-server/main.cpp > CMakeFiles/srt_server.dir/main.cpp.i
+
+CMakeFiles/srt_server.dir/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/srt_server.dir/main.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/akm2109/common/workspace/it/clion/srt-server/main.cpp -o CMakeFiles/srt_server.dir/main.cpp.s
+
+CMakeFiles/srt_server.dir/var_defs.cpp.o: CMakeFiles/srt_server.dir/flags.make
+CMakeFiles/srt_server.dir/var_defs.cpp.o: ../var_defs.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/akm2109/common/workspace/it/clion/srt-server/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/srt_server.dir/var_defs.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/srt_server.dir/var_defs.cpp.o -c /home/akm2109/common/workspace/it/clion/srt-server/var_defs.cpp
+
+CMakeFiles/srt_server.dir/var_defs.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/srt_server.dir/var_defs.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/akm2109/common/workspace/it/clion/srt-server/var_defs.cpp > CMakeFiles/srt_server.dir/var_defs.cpp.i
+
+CMakeFiles/srt_server.dir/var_defs.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/srt_server.dir/var_defs.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/akm2109/common/workspace/it/clion/srt-server/var_defs.cpp -o CMakeFiles/srt_server.dir/var_defs.cpp.s
 
 # Object files for target srt_server
 srt_server_OBJECTS = \
-"CMakeFiles/srt_server.dir/server.cpp.o"
+"CMakeFiles/srt_server.dir/handlers.cpp.o" \
+"CMakeFiles/srt_server.dir/main.cpp.o" \
+"CMakeFiles/srt_server.dir/var_defs.cpp.o"
 
 # External object files for target srt_server
 srt_server_EXTERNAL_OBJECTS =
 
-srt_server: CMakeFiles/srt_server.dir/server.cpp.o
+srt_server: CMakeFiles/srt_server.dir/handlers.cpp.o
+srt_server: CMakeFiles/srt_server.dir/main.cpp.o
+srt_server: CMakeFiles/srt_server.dir/var_defs.cpp.o
 srt_server: CMakeFiles/srt_server.dir/build.make
 srt_server: CMakeFiles/srt_server.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/akm2109/common/workspace/it/clion/srt-server/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable srt_server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/akm2109/common/workspace/it/clion/srt-server/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable srt_server"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/srt_server.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -1,5 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/srt_server.dir/server.cpp.o"
+  "CMakeFiles/srt_server.dir/handlers.cpp.o"
+  "CMakeFiles/srt_server.dir/main.cpp.o"
+  "CMakeFiles/srt_server.dir/var_defs.cpp.o"
   "srt_server"
   "srt_server.pdb"
 )

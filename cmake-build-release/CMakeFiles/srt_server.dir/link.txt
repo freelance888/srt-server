@@ -1,1 +1,1 @@
-/usr/bin/c++   -pthread -O3 -DNDEBUG   CMakeFiles/srt_server.dir/server.cpp.o  -o srt_server  -lsrt 
+/usr/bin/c++   -pthread -O3 -DNDEBUG   CMakeFiles/srt_server.dir/handlers.cpp.o CMakeFiles/srt_server.dir/main.cpp.o CMakeFiles/srt_server.dir/var_defs.cpp.o  -o srt_server  -lsrt 

@@ -143,32 +143,86 @@ srt_server/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/build
 .PHONY : srt_server/fast
 
-server.o: server.cpp.o
+handlers.o: handlers.cpp.o
 
-.PHONY : server.o
+.PHONY : handlers.o
 
 # target to build an object file
-server.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/server.cpp.o
-.PHONY : server.cpp.o
+handlers.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/handlers.cpp.o
+.PHONY : handlers.cpp.o
 
-server.i: server.cpp.i
+handlers.i: handlers.cpp.i
 
-.PHONY : server.i
+.PHONY : handlers.i
 
 # target to preprocess a source file
-server.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/server.cpp.i
-.PHONY : server.cpp.i
+handlers.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/handlers.cpp.i
+.PHONY : handlers.cpp.i
 
-server.s: server.cpp.s
+handlers.s: handlers.cpp.s
 
-.PHONY : server.s
+.PHONY : handlers.s
 
 # target to generate assembly for a file
-server.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/server.cpp.s
-.PHONY : server.cpp.s
+handlers.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/handlers.cpp.s
+.PHONY : handlers.cpp.s
+
+main.o: main.cpp.o
+
+.PHONY : main.o
+
+# target to build an object file
+main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/main.cpp.o
+.PHONY : main.cpp.o
+
+main.i: main.cpp.i
+
+.PHONY : main.i
+
+# target to preprocess a source file
+main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/main.cpp.i
+.PHONY : main.cpp.i
+
+main.s: main.cpp.s
+
+.PHONY : main.s
+
+# target to generate assembly for a file
+main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/main.cpp.s
+.PHONY : main.cpp.s
+
+var_defs.o: var_defs.cpp.o
+
+.PHONY : var_defs.o
+
+# target to build an object file
+var_defs.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/var_defs.cpp.o
+.PHONY : var_defs.cpp.o
+
+var_defs.i: var_defs.cpp.i
+
+.PHONY : var_defs.i
+
+# target to preprocess a source file
+var_defs.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/var_defs.cpp.i
+.PHONY : var_defs.cpp.i
+
+var_defs.s: var_defs.cpp.s
+
+.PHONY : var_defs.s
+
+# target to generate assembly for a file
+var_defs.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/var_defs.cpp.s
+.PHONY : var_defs.cpp.s
 
 # Help Target
 help:
@@ -179,9 +233,15 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... srt_server"
-	@echo "... server.o"
-	@echo "... server.i"
-	@echo "... server.s"
+	@echo "... handlers.o"
+	@echo "... handlers.i"
+	@echo "... handlers.s"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
+	@echo "... var_defs.o"
+	@echo "... var_defs.i"
+	@echo "... var_defs.s"
 .PHONY : help
 
 
