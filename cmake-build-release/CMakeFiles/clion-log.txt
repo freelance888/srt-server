@@ -1,4 +1,0 @@
-/home/akm2109/opt/clion/2020.3.1/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - Unix Makefiles" /home/akm2109/common/workspace/it/clion/srt-server
--- Configuring done
--- Generating done
--- Build files have been written to: /home/akm2109/common/workspace/it/clion/srt-server/cmake-build-release

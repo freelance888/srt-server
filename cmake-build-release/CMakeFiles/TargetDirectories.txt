@@ -1,3 +1,0 @@
-/home/akm2109/common/workspace/it/clion/srt-server/cmake-build-release/CMakeFiles/edit_cache.dir
-/home/akm2109/common/workspace/it/clion/srt-server/cmake-build-release/CMakeFiles/rebuild_cache.dir
-/home/akm2109/common/workspace/it/clion/srt-server/cmake-build-release/CMakeFiles/srt_server.dir
