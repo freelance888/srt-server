@@ -82,7 +82,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/akm2109/common/workspace/it/clion/srt-server/handlers.cpp">
+		<Unit filename="/home/akm2109/common/workspace/it/clion/srt-server/core.cpp">
 			<Option target="srt_server"/>
 		</Unit>
 		<Unit filename="/home/akm2109/common/workspace/it/clion/srt-server/main.cpp">

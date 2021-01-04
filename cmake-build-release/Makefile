@@ -143,32 +143,32 @@ srt_server/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/build
 .PHONY : srt_server/fast
 
-handlers.o: handlers.cpp.o
+core.o: core.cpp.o
 
-.PHONY : handlers.o
+.PHONY : core.o
 
 # target to build an object file
-handlers.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/handlers.cpp.o
-.PHONY : handlers.cpp.o
+core.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/core.cpp.o
+.PHONY : core.cpp.o
 
-handlers.i: handlers.cpp.i
+core.i: core.cpp.i
 
-.PHONY : handlers.i
+.PHONY : core.i
 
 # target to preprocess a source file
-handlers.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/handlers.cpp.i
-.PHONY : handlers.cpp.i
+core.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/core.cpp.i
+.PHONY : core.cpp.i
 
-handlers.s: handlers.cpp.s
+core.s: core.cpp.s
 
-.PHONY : handlers.s
+.PHONY : core.s
 
 # target to generate assembly for a file
-handlers.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/handlers.cpp.s
-.PHONY : handlers.cpp.s
+core.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/srt_server.dir/build.make CMakeFiles/srt_server.dir/core.cpp.s
+.PHONY : core.cpp.s
 
 main.o: main.cpp.o
 
@@ -233,9 +233,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... srt_server"
-	@echo "... handlers.o"
-	@echo "... handlers.i"
-	@echo "... handlers.s"
+	@echo "... core.o"
+	@echo "... core.i"
+	@echo "... core.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

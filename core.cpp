@@ -1,5 +1,19 @@
 #include "main.h"
 
+#define SET_BYTES_SIZING(bytes_total, bytes_var, suff_var) \
+        if (bytes_total <= 1024) { \
+            bytes_var = (float)bytes_total; \
+            suff_var = (char *)"B"; \
+        } else if (bytes_total <= 1024 * 1024) { \
+            bytes_var = (float)bytes_total / 1024.0f; \
+            suff_var = (char *)"KB"; \
+        } else if (bytes_total <= pow(1024, 3)) { \
+            bytes_var = (float)bytes_total / pow(1024.0f, 2); \
+            suff_var = (char *)"MB"; \
+        } else { \
+            bytes_var = (float)bytes_total / pow(1024.0f, 3); \
+            suff_var = (char *)"GB"; \
+        }
 
 uint64_t get_current_ms() {
     return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
@@ -301,41 +315,88 @@ void rm_socket(SRTSOCKET s_in, SRTSOCKET s_out) {
     }
 }
 
-void log(int level, char *msg) {
-    switch (level) {
+char *get_time_str(int formatlvl) {
+    time_t now = time(nullptr);
+    tm *p_tm = gmtime(&now);
+
+    switch (formatlvl) {
+        case TIMESTR_UALL:
+            strftime(timestr, sizeof timestr, "%Y.%m.%d %H:%M:%S", p_tm);
+            break;
+        case TIMESTR_UDATE:
+            strftime(timestr, sizeof timestr, "%Y.%m.%d", p_tm);
+            break;
+        case TIMESTR_UTIME:
+            strftime(timestr, sizeof timestr, "%H:%M:%S", p_tm);
+            break;
+        case TIMESTR_SALL:
+            strftime(timestr, sizeof timestr, "%Y%m%d %H%M%S", p_tm);
+            break;
+        case TIMESTR_SDATE:
+            strftime(timestr, sizeof timestr, "%Y%m%d", p_tm);
+            break;
+        case TIMESTR_STIME:
+            strftime(timestr, sizeof timestr, "%H%M%S", p_tm);
+            break;
         default:
-            snprintf(tempbuff, sizeof(tempbuff), "[LOG_%d] ", level);
-        case LOG_DEBUG:
-            snprintf(tempbuff, sizeof(tempbuff), "[LOG_DEBUG] ");
-        case LOG_WARNING:
-            snprintf(tempbuff, sizeof(tempbuff), "[LOG_WARNING] ");
-        case LOG_ERR:
-            snprintf(tempbuff, sizeof(tempbuff), "[LOG_ERR] ");
-        case LOG_INFO:
-            snprintf(tempbuff, sizeof(tempbuff), "[LOG_INFO] ");
-        case LOG_CONSOLE:
-            snprintf(tempbuff, sizeof(tempbuff), "");
+            snprintf(timestr, sizeof timestr, "TIME_INVALID_FORMAT");
+            break;
     }
-    pthread_mutex_lock(&log_lock);
-    cout << "\r" << tempbuff << msg << flush;
-    pthread_mutex_unlock(&log_lock);
+
+    return timestr;
 }
 
-#define SET_BYTES_SIZING(bytes_total, bytes_var, suff_var) \
-        if (bytes_total <= 1024) { \
-            bytes_var = (float)bytes_total; \
-            suff_var = (char *)"B"; \
-        } else if (bytes_total <= 1024 * 1024) { \
-            bytes_var = (float)bytes_total / 1024.0f; \
-            suff_var = (char *)"KB"; \
-        } else if (bytes_total <= pow(1024, 3)) { \
-            bytes_var = (float)bytes_total / pow(1024.0f, 2); \
-            suff_var = (char *)"MB"; \
-        } else { \
-            bytes_var = (float)bytes_total / pow(1024.0f, 3); \
-            suff_var = (char *)"GB"; \
-        }
+char *get_time_formatted(char *format) {
+    time_t now = time(nullptr);
+    tm *p_tm = gmtime(&now);
 
+    strftime(timestr, sizeof timestr, format, p_tm);
+
+    return timestr;
+}
+
+void init_log() {
+    char usrname[100];
+    getlogin_r(usrname, 100);
+
+    snprintf(tempbuff, sizeof(tempbuff), "/home/%s/.local/share/srt-server/%s_%sto%s.log",
+             usrname,
+             get_time_formatted("%m%d_%H%M%S"),
+             service_rcv.c_str(),
+             service_snd.c_str()
+             );
+    system("mkdir -p ~/.local/share/srt-server");
+    fcout = new ofstream(tempbuff);
+}
+
+void log(int level, char *msg) {
+
+    switch (level) {
+        case LOG_DEBUG:
+            snprintf(tempbuff, sizeof(tempbuff), "[DEBUG] ");
+            break;
+        case LOG_WARNING:
+            snprintf(tempbuff, sizeof(tempbuff), "[WARNING] ");
+            break;
+        case LOG_ERR:
+            snprintf(tempbuff, sizeof(tempbuff), "[ERR] ");
+            break;
+        case LOG_INFO:
+        case LOG_CONSOLE:
+            snprintf(tempbuff, sizeof(tempbuff), "");
+            break;
+        default:
+            snprintf(tempbuff, sizeof(tempbuff), "[LVL%d] ", level);
+            break;
+    }
+
+    pthread_mutex_lock(&log_lock);
+    cout << "\033[2K\r[" << get_time_str() << "] " << tempbuff << msg << flush;
+    if (fcout && fcout->good() && fcout->is_open() && level != LOG_CONSOLE) {
+        (*fcout) << "[" << get_time_str() << "] " << tempbuff << msg << flush;
+    }
+    pthread_mutex_unlock(&log_lock);
+}
 
 void print_stats(float timedelta) {
 
@@ -346,13 +407,9 @@ void print_stats(float timedelta) {
     SET_BYTES_SIZING(temp_rcv_bytes, temp_rcv, temp_rcv_suff)
     SET_BYTES_SIZING(temp_send_bytes, temp_snd, temp_snd_suff)
 
-    time_t now = time(nullptr);
-    tm *p_tm = gmtime(&now);
-    strftime(tempbuff, sizeof tempbuff, "%Y.%m.%d %H:%M:%S", p_tm);
-
-    snprintf(mainthreadmsg_buff, sizeof mainthreadmsg_buff, "[%s][STATS] [%d sources; %d targets] "
+    snprintf(mainthreadmsg_buff, sizeof mainthreadmsg_buff, "[STATS] [%d sources; %d targets] "
                                                             "[+%.1fs] [total rcv: %.1f%s (+%.1f%s)] [total sent: %.1f%s (+%.1f%s)]",
-             tempbuff, src_count, target_count, timedelta,
+             src_count, target_count, timedelta,
              total_rcv, total_rcv_suff,
              temp_rcv, temp_rcv_suff,
              total_snd, total_snd_suff,

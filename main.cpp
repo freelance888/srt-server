@@ -8,8 +8,8 @@ int main(int argc, char *argv[]) {
 
     int yes = 1, no = 0;
 
-    string service_rcv("9000");
-    string service_snd("9001");
+    service_rcv = string("9000");
+    service_snd = string("9001");
 
     if (argc == 3) {
         if (strcmp(argv[1], argv[2]) == 0) {
@@ -84,6 +84,8 @@ int main(int argc, char *argv[]) {
         return 6;
     }
 
+    init_log();
+
     // Start connection thread
     connthread_infos[0].is_used = true;
     connthread_infos[0].msg_buff = (char *) malloc(WORKTHREAD_MSG_BUFF_LEN);
@@ -97,11 +99,11 @@ int main(int argc, char *argv[]) {
     };
 
     if (pthread_create(&connthread_infos[0].thread, NULL, connections_handler, (void *) (&connthread_0_info)) != 0) {
-        cout << "[MAINTHREAD] cannot create connection thread 0: " << strerror(errno) << endl;
+        cout << "cannot create connection thread 0: " << strerror(errno) << endl;
         return 7;
     }
     if (pthread_detach(connthread_infos[0].thread) != 0) {
-        cout << "[MAINTHREAD] cannot detach connection thread 0: " << strerror(errno) << endl;
+        cout << "cannot detach connection thread 0: " << strerror(errno) << endl;
         return 8;
     }
 
@@ -121,17 +123,17 @@ int main(int argc, char *argv[]) {
 
     if (pthread_create(&transferthread_infos[0].thread, NULL, handle_data_transfer,
                        (void *) (&transferthread_0_info)) != 0) {
-        cout << "[MAINTHREAD] cannot create transfer thread 0: " << strerror(errno) << endl;
+        cout << "cannot create transfer thread 0: " << strerror(errno) << endl;
         return 7;
     }
     if (pthread_detach(transferthread_infos[0].thread) != 0) {
-        cout << "[MAINTHREAD] cannot detach transfer thread 0: " << strerror(errno) << endl;
+        cout << "cannot detach transfer thread 0: " << strerror(errno) << endl;
         return 8;
     }
 
     transferthread_infos[0].is_alive = true;
 
-    log(LOG_INFO, (char *) "Server was successfully initialized");
+    log(LOG_INFO, (char *) "Server was successfully initialized\n");
 
     uint64_t last_ms = get_current_ms();
 
