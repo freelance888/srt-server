@@ -1,4 +1,4 @@
-#include "main.h"
+#include "../headers/main.h"
 
 // Source/target
 int src_count = 0;
