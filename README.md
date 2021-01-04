@@ -1,7 +1,7 @@
 <h1>srt-server</h1>
 
 <h3>Dependencies</h3>
- - <a src="https://github.com/Haivision/srt">SRT</a>
+ - <a src=https://github.com/Haivision/srt>SRT</a><br>
  - cmake > 3.17.2
 
 <h3>Build</h3>
