@@ -391,8 +391,12 @@ void log(int level, char *msg) {
     }
 
     pthread_mutex_lock(&log_lock);
+
+    // '\033[2K (^[[2K) - is a VT100 escape code which means 'Clear entire line'
+    // The list of VT100 escape codes: https://espterm.github.io/docs/VT100%20escape%20codes.html
     cout << "\033[2K\r[" << get_time_str() << "] " << tempbuff << msg << flush;
     if (fcout && fcout->good() && fcout->is_open() && level != LOG_CONSOLE) {
+        // But we do not need to put escape code out to file
         (*fcout) << "[" << get_time_str() << "] " << tempbuff << msg << flush;
     }
     pthread_mutex_unlock(&log_lock);
@@ -402,11 +406,14 @@ void print_stats(float timedelta) {
 
     float total_rcv = 0, total_snd = 0, temp_rcv = 0, temp_snd;
     char *total_rcv_suff = nullptr, *total_snd_suff = nullptr, *temp_rcv_suff = nullptr, *temp_snd_suff = nullptr;
+
+    // SET_BYTES_SIZING is a macro which transforms, for example millions of bytes into MB, GB etc.
     SET_BYTES_SIZING(total_rcv_bytes, total_rcv, total_rcv_suff)
     SET_BYTES_SIZING(total_send_bytes, total_snd, total_snd_suff)
     SET_BYTES_SIZING(temp_rcv_bytes, temp_rcv, temp_rcv_suff)
     SET_BYTES_SIZING(temp_send_bytes, temp_snd, temp_snd_suff)
 
+    // Stats format
     snprintf(mainthreadmsg_buff, sizeof mainthreadmsg_buff, "[STATS] [%d sources; %d targets] "
                                                             "[+%.1fs] [total rcv: %.1f%s (+%.1f%s)] [total sent: %.1f%s (+%.1f%s)]",
              src_count, target_count, timedelta,
