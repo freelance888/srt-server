@@ -70,19 +70,14 @@ void *connections_handler(void *ptr) {
                 sockaddr_storage clientaddr;
                 int addrlen = sizeof(clientaddr);
 
+                // Restriction, only one source accepted for now
                 if (src_count > 0) {
                     continue;
                 }
 
                 fhandle = srt_accept(sock_rcv, (sockaddr *) &clientaddr, &addrlen);
                 if (fhandle == SRT_INVALID_SOCK) {
-                    // Set error message
-                    snprintf(info->thread_info->msg_buff, WORKTHREAD_MSG_BUFF_LEN,
-                             "[CONNTHREAD] rcv srt_accept error: %s; stopping thread...\n",
-                             srt_getlasterror_str());
-                    // Set thread closed and log error
-                    set_thread_closed(info->thread_info, info->thread_info->msg_buff, LOG_ERR);
-                    return nullptr;
+                    continue;
                 }
 
                 char clienthost[NI_MAXHOST];

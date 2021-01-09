@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.17)
-project(srt-server)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.17)
+PROJECT(srt-server)
 
-set(CMAKE_CXX_STANDARD 11)
+SET(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
-add_executable(srt-server headers/structs.h headers/main.h source/core.cpp source/main.cpp source/environment.cpp)
-target_link_libraries(srt-server -lsrt)
+ADD_EXECUTABLE(srt-server headers/structs.h headers/main.h source/core.cpp source/main.cpp source/environment.cpp)
+TARGET_LINK_LIBRARIES(srt-server -lsrt)
 
 INSTALL(TARGETS srt-server)
