@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
         service_rcv = argv[1];
         service_snd = argv[2];
         if (argc > 3) {
-            if (strcmp(argv[3], "rtmp") == 0) {
+            if (strcmp(argv[3], "--rtmp") == 0) {
                 cout << "RTMP input mode enabled" << endl;
             }
             in_rtmp = true;
