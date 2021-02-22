@@ -79,6 +79,8 @@ uint64_t get_current_ms();
 
 SRTSOCKET create_starter_socket(string *service);
 
+void *begin_rtmp(void *opinfo);
+
 void *handle_data_transfer(void *opinfo);
 
 void *connections_handler(void *ptr);

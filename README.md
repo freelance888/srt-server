@@ -37,6 +37,10 @@ sudo apt update && sudo apt install -y tclsh pkg-config cmake libssl-dev build-e
 https://github.com/ALLATRA-IT/srt-server/releases
 
 ## Usage
-srt-server [PORT_RECEIVE PORT_SEND]
+srt-server [PORT_RECEIVE PORT_SEND [--rtmp]]
 
-*if PORT_RECEIVE and PORT_SEND are not specified, by default server receives on port 9000 and sends on 9001*
+*if PORT_RECEIVE and PORT_SEND are not specified, by default server receives on port 9000 and sends on 9001.* 
+
+*if **rtmp** is specified, rtmp stream is received on rtmp://0.0.0.0/rtmp/rtmp2srt*
+
+***ARGUMENTS ARE POSITION SENSITIVE***
