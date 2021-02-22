@@ -6,18 +6,27 @@ int main(int argc, char *argv[]) {
     srt_startup();
     srt_setloglevel(srt_logging::LogLevel::fatal);
 
+    bool in_rtmp = false;
+    pthread_t rtmp_thread;
+
     int yes = 1, no = 0;
 
     service_rcv = string("9000");
     service_snd = string("9001");
 
-    if (argc == 3) {
+    if (argc >= 3) {
         if (strcmp(argv[1], argv[2]) == 0) {
             cout << "Argument 1 cannot be equal to argument 2" << endl;
             return 1;
         }
         service_rcv = argv[1];
         service_snd = argv[2];
+        if (argc > 3) {
+            if (strcmp(argv[3], "rtmp") == 0) {
+                cout << "RTMP input mode enabled" << endl;
+            }
+            in_rtmp = true;
+        }
     }
 
     // Open sockets
@@ -121,7 +130,7 @@ int main(int argc, char *argv[]) {
             .thread_info=&transferthread_infos[0]
     };
 
-    if (pthread_create(&transferthread_infos[0].thread, NULL, handle_data_transfer,
+    if (pthread_create(&transferthread_infos[0].thread, nullptr, handle_data_transfer,
                        (void *) (&transferthread_0_info)) != 0) {
         cout << "cannot create transfer thread 0: " << strerror(errno) << endl;
         return 7;
@@ -129,6 +138,17 @@ int main(int argc, char *argv[]) {
     if (pthread_detach(transferthread_infos[0].thread) != 0) {
         cout << "cannot detach transfer thread 0: " << strerror(errno) << endl;
         return 8;
+    }
+
+    if (in_rtmp) {
+        if (pthread_create(&rtmp_thread, nullptr, begin_rtmp, nullptr) != 0) {
+            cout << "cannot create rtmp thread" << strerror(errno) << endl;
+            return 7;
+        }
+        if (pthread_detach(rtmp_thread) != 0) {
+            cout << "cannot detach rtmp thread: " << strerror(errno) << endl;
+            return 8;
+        }
     }
 
     transferthread_infos[0].is_alive = true;
@@ -145,7 +165,7 @@ int main(int argc, char *argv[]) {
 
             pthread_mutex_lock(&stat_lock);
 
-            float timedelta = (float)(get_current_ms() - last_ms) / 1000;
+            float timedelta = (float) (get_current_ms() - last_ms) / 1000;
             total_rcv_bytes += temp_rcv_bytes;
             total_send_bytes += temp_send_bytes;
             print_stats(timedelta);
@@ -250,6 +270,22 @@ int main(int argc, char *argv[]) {
     srt_cleanup();
 
     pthread_mutex_destroy(&lock);
+
+    return 0;
+}
+
+void *begin_rtmp(void *opinfo) {
+    char command[1000];
+    snprintf(command, 1000,
+             "ffmpeg -f flv -listen 1 -i rtmp://0.0.0.0:1935/rtmp/rtmp2srt "
+             "-c copy -f mpegts srt://127.0.0.1:%s?pkt_size=1316",
+             service_rcv.c_str());
+
+    while (true) {
+        cout << "Invoke cmd" << endl;
+        system(command);
+        cout << "RTMP error, restarting..." << endl;
+    }
 
     return 0;
 }
