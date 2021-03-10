@@ -50,6 +50,7 @@ const int EVENTS_SND = SRT_EPOLL_OUT | SRT_EPOLL_ERR;
 const int EVENTS_SND_ET = SRT_EPOLL_OUT | SRT_EPOLL_ERR | SRT_EPOLL_ET;
 
 // Source/target
+extern bool enable_rtmp;
 extern int src_count;
 extern int target_count;
 extern list<SRTSOCKET> sockets_in, sockets_out;
@@ -65,6 +66,7 @@ extern int used_transfer_treads;
 extern int used_conn_threads;
 extern workerthread_info transferthread_infos[MAX_TRANSFER_THREADS];
 extern workerthread_info connthread_infos[MAX_CONN_THREADS];
+extern pthread_t rtmp_thread;
 
 // Temp buffers
 extern char mainthreadmsg_buff[WORKTHREAD_MSG_BUFF_LEN];

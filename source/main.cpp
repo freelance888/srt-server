@@ -1,13 +1,25 @@
 #include "../headers/main.h"
+#include <csignal>
+pthread_t self;
+void terminateHandler(int signum) {
+    cout << "Received signal: " << signum << endl;
+    if (enable_rtmp) {
+        pthread_kill(rtmp_thread, SIGKILL);
+    }
+    pthread_cancel(connthread_infos[0].thread);
+    pthread_cancel(transferthread_infos[0].thread);
 
+    exit(signum);
+}
 
 int main(int argc, char *argv[]) {
+    self = pthread_self();
+    signal(SIGINT, terminateHandler);
+    signal(SIGTERM, terminateHandler);
+//    signal(SIGKILL, terminateHandler);
 
     srt_startup();
     srt_setloglevel(srt_logging::LogLevel::fatal);
-
-    bool in_rtmp = false;
-    pthread_t rtmp_thread;
 
     int yes = 1, no = 0;
 
@@ -25,7 +37,7 @@ int main(int argc, char *argv[]) {
             if (strcmp(argv[3], "--rtmp") == 0) {
                 cout << "RTMP input mode enabled" << endl;
             }
-            in_rtmp = true;
+            enable_rtmp = true;
         }
     }
 
@@ -111,10 +123,6 @@ int main(int argc, char *argv[]) {
         cout << "cannot create connection thread 0: " << strerror(errno) << endl;
         return 7;
     }
-    if (pthread_detach(connthread_infos[0].thread) != 0) {
-        cout << "cannot detach connection thread 0: " << strerror(errno) << endl;
-        return 8;
-    }
 
     connthread_infos[0].is_alive = true;
 
@@ -135,19 +143,11 @@ int main(int argc, char *argv[]) {
         cout << "cannot create transfer thread 0: " << strerror(errno) << endl;
         return 7;
     }
-    if (pthread_detach(transferthread_infos[0].thread) != 0) {
-        cout << "cannot detach transfer thread 0: " << strerror(errno) << endl;
-        return 8;
-    }
 
-    if (in_rtmp) {
+    if (enable_rtmp) {
         if (pthread_create(&rtmp_thread, nullptr, begin_rtmp, nullptr) != 0) {
             cout << "cannot create rtmp thread" << strerror(errno) << endl;
             return 7;
-        }
-        if (pthread_detach(rtmp_thread) != 0) {
-            cout << "cannot detach rtmp thread: " << strerror(errno) << endl;
-            return 8;
         }
     }
 
@@ -205,12 +205,6 @@ int main(int argc, char *argv[]) {
                     log(LOG_ERR, mainthreadmsg_buff);
                     exit(9);
                 }
-                if (pthread_detach(transferthread_infos[0].thread) != 0) {
-                    snprintf(mainthreadmsg_buff, sizeof(mainthreadmsg_buff),
-                             "[MAINTHREAD] cannot detach transfer thread %d: %s; finishing...\n", i, strerror(errno));
-                    log(LOG_ERR, mainthreadmsg_buff);
-                    exit(10);
-                }
 
                 snprintf(mainthreadmsg_buff, sizeof(mainthreadmsg_buff),
                          "[MAINTHREAD] transfer thread %d was successfully recreated\n", i);
@@ -249,12 +243,6 @@ int main(int argc, char *argv[]) {
                     log(LOG_ERR, mainthreadmsg_buff);
                     exit(9);
                 }
-                if (pthread_detach(connthread_infos[0].thread) != 0) {
-                    snprintf(mainthreadmsg_buff, sizeof(mainthreadmsg_buff),
-                             "[MAINTHREAD] cannot detach connection thread %d: %s; finishing...\n", i, strerror(errno));
-                    log(LOG_ERR, mainthreadmsg_buff);
-                    exit(10);
-                }
 
                 snprintf(mainthreadmsg_buff, sizeof(mainthreadmsg_buff),
                          "[MAINTHREAD] connection thread %d was successfully recreated\n", i);
@@ -281,11 +269,8 @@ void *begin_rtmp(void *opinfo) {
              "-c copy -f mpegts srt://127.0.0.1:%s?pkt_size=1316",
              service_rcv.c_str());
 
-    while (true) {
-        cout << "Invoke cmd" << endl;
-        system(command);
-        cout << "RTMP error, restarting..." << endl;
-    }
+    cout << "Invoke cmd" << endl;
+    system(command);
 
     return 0;
 }
