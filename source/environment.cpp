@@ -1,6 +1,7 @@
 #include "../headers/main.h"
 
 // Source/target
+bool enable_rtmp = false;
 int src_count = 0;
 int target_count = 0;
 list<SRTSOCKET> sockets_in, sockets_out;
@@ -16,6 +17,7 @@ int used_transfer_treads = 0;
 int used_conn_threads = 0;
 workerthread_info transferthread_infos[MAX_TRANSFER_THREADS];
 workerthread_info connthread_infos[MAX_CONN_THREADS];
+pthread_t rtmp_thread;
 
 // Temp buffers
 char mainthreadmsg_buff[WORKTHREAD_MSG_BUFF_LEN];
