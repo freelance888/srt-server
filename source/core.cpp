@@ -50,6 +50,7 @@ void *connections_handler(void *ptr) {
         for (int i = 0; i < n_rcv; i++) {
             SRTSOCKET sock_rcv = srtrcvfds[i];
             SRT_SOCKSTATUS status_rcv = srt_getsockstate(sock_rcv);
+
             if ((status_rcv == SRTS_BROKEN) ||
                 (status_rcv == SRTS_NONEXIST) ||
                 (status_rcv == SRTS_CLOSED)) {
@@ -70,7 +71,7 @@ void *connections_handler(void *ptr) {
                 sockaddr_storage clientaddr;
                 int addrlen = sizeof(clientaddr);
 
-                // Restriction, only one source accepted for now
+                // Restriction: only one source accepted for now
                 if (src_count > 0) {
                     continue;
                 }
@@ -79,6 +80,16 @@ void *connections_handler(void *ptr) {
                 if (fhandle == SRT_INVALID_SOCK) {
                     continue;
                 }
+                SRT_SOCKSTATUS status_fd = srt_getsockstate(fhandle);
+                if ((status_fd == SRTS_BROKEN) ||
+                    (status_fd == SRTS_NONEXIST) ||
+                    (status_fd == SRTS_CLOSED)) {
+                    srt_close(fhandle);
+                    continue;
+                }
+
+                int srtt = SRTT_LIVE;
+                srt_setsockflag(fhandle, SRTO_TRANSTYPE, &srtt, sizeof(srtt));
 
                 char clienthost[NI_MAXHOST];
                 char clientservice[NI_MAXSERV];
@@ -141,6 +152,16 @@ void *connections_handler(void *ptr) {
                 if (fhandle == SRT_INVALID_SOCK) {
                     continue;
                 }
+                SRT_SOCKSTATUS status_fd = srt_getsockstate(fhandle);
+                if ((status_fd == SRTS_BROKEN) ||
+                    (status_fd == SRTS_NONEXIST) ||
+                    (status_fd == SRTS_CLOSED)) {
+                    srt_close(fhandle);
+                    continue;
+                }
+
+                int srtt = SRTT_LIVE;
+                srt_setsockflag(fhandle, SRTO_TRANSTYPE, &srtt, sizeof(srtt));
 
                 char clienthost[NI_MAXHOST];
                 char clientservice[NI_MAXSERV];
@@ -359,7 +380,7 @@ void init_log() {
              get_time_formatted("%m%d_%H%M%S"),
              service_rcv.c_str(),
              service_snd.c_str()
-             );
+    );
     system("mkdir -p ~/.local/share/srt-server");
     fcout = new ofstream(tempbuff);
 }
