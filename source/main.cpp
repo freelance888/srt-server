@@ -266,7 +266,7 @@ int main(int argc, char *argv[]) {
 void *begin_rtmp(void *opinfo) {
     char command[1000];
     snprintf(command, 1000,
-             "ffmpeg -fflags +genpts -listen 1 -re -i rtmp://0.0.0.0:%s/rtmp/ "
+             "ffmpeg -fflags +genpts -listen 1 -re -i rtmp://0.0.0.0:%s/rtmp/rtmp2srt "
              "-acodec copy -vcodec copy -strict -2 -y -f mpegts srt://127.0.0.1:%s?pkt_size=1316",
              service_rtmp.c_str(), service_rcv.c_str());
 
