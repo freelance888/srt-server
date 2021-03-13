@@ -54,7 +54,7 @@ extern bool enable_rtmp;
 extern int src_count;
 extern int target_count;
 extern list<SRTSOCKET> sockets_in, sockets_out;
-extern string service_rcv, service_snd;
+extern string service_rcv, service_snd, service_rtmp;
 
 // Statistics
 extern int64_t total_rcv_bytes, total_send_bytes;

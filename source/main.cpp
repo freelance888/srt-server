@@ -1,6 +1,8 @@
 #include "../headers/main.h"
 #include <csignal>
+
 pthread_t self;
+
 void terminateHandler(int signum) {
     cout << "Received signal: " << signum << endl;
     if (enable_rtmp) {
@@ -34,10 +36,9 @@ int main(int argc, char *argv[]) {
         service_rcv = argv[1];
         service_snd = argv[2];
         if (argc > 3) {
-            if (strcmp(argv[3], "--rtmp") == 0) {
-                cout << "RTMP input mode enabled" << endl;
-            }
+            service_rtmp = argv[3];
             enable_rtmp = true;
+            cout << "RTMP input mode is enabled" << endl;
         }
     }
 
@@ -265,9 +266,9 @@ int main(int argc, char *argv[]) {
 void *begin_rtmp(void *opinfo) {
     char command[1000];
     snprintf(command, 1000,
-             "ffmpeg -f flv -listen 1 -i rtmp://0.0.0.0:1935/rtmp/rtmp2srt "
-             "-c copy -f mpegts srt://127.0.0.1:%s?pkt_size=1316",
-             service_rcv.c_str());
+             "ffmpeg -fflags +genpts -listen 1 -re -i rtmp://0.0.0.0:%s/rtmp/ "
+             "-acodec copy -vcodec copy -strict -2 -y -f mpegts srt://127.0.0.1:%s?pkt_size=1316",
+             service_rtmp.c_str(), service_rcv.c_str());
 
     cout << "Invoke cmd" << endl;
     system(command);
