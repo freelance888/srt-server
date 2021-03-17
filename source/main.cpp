@@ -273,6 +273,7 @@ void *begin_rtmp(void *opinfo) {
     while (true) {
         cout << "Start ffmpeg" << endl;
         system(command);
+        sleep(1);
     }
 
     return 0;
