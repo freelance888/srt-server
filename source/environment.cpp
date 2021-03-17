@@ -5,7 +5,7 @@ bool enable_rtmp = false;
 int src_count = 0;
 int target_count = 0;
 list<SRTSOCKET> sockets_in, sockets_out;
-string service_rcv, service_snd;
+string service_rcv, service_snd, service_rtmp;
 
 // Statistics
 int64_t total_rcv_bytes = 0, total_send_bytes = 0;
