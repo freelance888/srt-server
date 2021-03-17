@@ -267,11 +267,13 @@ void *begin_rtmp(void *opinfo) {
     char command[1000];
     snprintf(command, 1000,
              "ffmpeg -fflags +genpts -listen 1 -re -i rtmp://0.0.0.0:%s/rtmp/rtmp2srt "
-             "-acodec copy -vcodec copy -strict -2 -y -f mpegts srt://127.0.0.1:%s?pkt_size=1316",
+             "-acodec copy -vcodec copy -strict -2 -y -f mpegts srt://127.0.0.1:%s?pkt_size=1316&latency=2000000",
              service_rtmp.c_str(), service_rcv.c_str());
 
-    cout << "Invoke cmd" << endl;
-    system(command);
+    while (true) {
+        cout << "Start ffmpeg" << endl;
+        system(command);
+    }
 
     return 0;
 }
