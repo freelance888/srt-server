@@ -263,6 +263,8 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
+FILE *fFfmpeg;
+
 void *begin_rtmp(void *opinfo) {
     char command[1000];
     snprintf(command, 1000,
@@ -273,6 +275,8 @@ void *begin_rtmp(void *opinfo) {
     while (true) {
         cout << "Start ffmpeg" << endl;
         system(command);
+        cout << "FFmpeg is closed, restarting in 1 second..." << endl;
+        sleep(1);
     }
 
     return 0;
