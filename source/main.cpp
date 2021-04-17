@@ -3,6 +3,7 @@
 
 string service_srt, service_rtmp;
 bool enable_rtmp;
+pthread_t rtmp_thread;
 
 int main(int argc, char *argv[]) {
 //    self = pthread_self();
@@ -28,19 +29,30 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
+    if (enable_rtmp) {
+        if (pthread_create(&rtmp_thread, nullptr, begin_rtmp, nullptr) != 0) {
+            cout << "Cannot create rtmp thread: " << strerror(errno) << endl;
+            return -1;
+        }
+    }
+
     cout << "Server is ready on port: " << service_srt << endl;
+
+    while (true) {
+        instance->handleConnections();
+        instance->dataTransfer();
+        usleep(10000);
+    }
 
     return 0;
 }
-
-FILE *fFfmpeg;
 
 void *begin_rtmp(void *opinfo) {
     char command[1000];
     snprintf(command, 1000,
              "ffmpeg -fflags +genpts -listen 1 -re -i rtmp://0.0.0.0:%s/rtmp/rtmp2srt "
              "-acodec copy -vcodec copy -strict -2 -y -f mpegts srt://127.0.0.1:%s?pkt_size=1316&latency=2000000",
-             service_rtmp.c_str(), service_rcv.c_str());
+             service_rtmp.c_str(), service_srt.c_str());
 
     while (true) {
         cout << "Start ffmpeg" << endl;
@@ -50,39 +62,4 @@ void *begin_rtmp(void *opinfo) {
     }
 
     return 0;
-}
-
-SRTSOCKET create_starter_socket(string *service) {
-    addrinfo hints;
-    addrinfo *res;
-
-    int yes = 1, no = 0;
-
-    memset(&hints, 0, sizeof(struct addrinfo));
-    hints.ai_flags = AI_PASSIVE;
-    hints.ai_family = AF_INET;
-    hints.ai_socktype = SOCK_DGRAM;
-
-    if (getaddrinfo(nullptr, service->c_str(), &hints, &res) != 0) {
-        cout << "illegal port number or port is busy.\n" << endl;
-        return 0;
-    }
-
-    SRTSOCKET sfd = srt_create_socket();
-    if (sfd == SRT_INVALID_SOCK) {
-        cout << "srt_socket: " << srt_getlasterror_str() << endl;
-        return 0;
-    }
-
-    srt_setsockflag(sfd, SRTO_RCVSYN, &no, sizeof no);
-    srt_setsockflag(sfd, SRTO_SNDSYN, &no, sizeof no);
-
-    if (srt_bind(sfd, res->ai_addr, res->ai_addrlen == SRT_ERROR)) {
-        cout << "srt_bind: " << srt_getlasterror_str() << endl;
-        return 0;
-    }
-
-    freeaddrinfo(res);
-
-    return sfd;
 }
