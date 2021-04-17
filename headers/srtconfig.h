@@ -1,0 +1,26 @@
+//
+// Created by amukhsimov on 17/4/21.
+//
+
+#ifndef SRT_SERVER_SRTCONFIG_H
+#define SRT_SERVER_SRTCONFIG_H
+
+#include <srt/srt.h>
+
+using namespace std;
+
+const int CFSRT_MAX_CONNECTIONS_PER_ROOM = 1000;
+const int CFSRT_MAX_ROOMS_PER_INSTANCE = 10000;
+const int CFSRT_MAX_INSTANCES = 1;
+
+#define SRT_MAX_ROOM_CONNECTIONS 200
+#define SRT_MAX_INSTANCE_ROOMS 500
+#define SRT_BUFFER_SIZE 1500
+
+typedef enum {
+    DIR_UNDEFINED,
+    DIR_SERVER_TO_CLIENT,
+    DIR_CLIENT_TO_SERVER
+} TRANSFER_DIRECTIONS;
+
+#endif //SRT_SERVER_SRTCONFIG_H

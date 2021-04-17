@@ -4,7 +4,7 @@ PROJECT(srt-server)
 SET(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
-ADD_EXECUTABLE(srt-server headers/structs.h headers/main.h source/core.cpp source/main.cpp source/environment.cpp)
+ADD_EXECUTABLE(srt-server headers/main.h source/main.cpp headers/srtconfig.h headers/srtinstance.h headers/source.h source/source.cpp source/srtinstance.cpp source/srtroom.cpp)
 TARGET_LINK_LIBRARIES(srt-server -lsrt)
 
 INSTALL(TARGETS srt-server)

@@ -5,25 +5,8 @@
 #ifndef SRT_SERVER_MAIN_H
 #define SRT_SERVER_MAIN_H
 
-#include <iostream>
 #include <srt/srt.h>
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <cstring>
-#include <cstdlib>
-#include <netdb.h>
-#include <stdexcept>
-#include <list>
-#include <algorithm>
-#include <chrono>
-#include <cstdint>
-#include <unistd.h>
-#include <thread>
-#include <cmath>
-#include <ctime>
-#include <filesystem>
-#include "structs.h"
+#include "srtinstance.h"
 
 using namespace std;
 using namespace std::chrono;
